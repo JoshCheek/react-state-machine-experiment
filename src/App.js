@@ -25,35 +25,41 @@ class App extends Component {
         // kinda interesting to see:
         // console.log(this.reset.stateMachine.state)
 
-        // load screen for initial load, not for reload
-        if (loading && this.reset.isLoading())
-          return <p>LOADING</p>
-
         loading || this.reset.end()
 
-        if (error)
-          return <div>
-            <p>ERROR!</p>
-            <pre>{JSON.stringify(error, null, 2)}</pre>
-          </div>
-
-        const { counter, enabled } = this.state
-        const target               = data.value
-        const buttonFor            = (text, newCounter) =>
-          <button
-            disabled={!enabled}
-            onClick={() => this.update(target, newCounter, refetch)}
-          >
-            { text }
-          </button>
-
-        return <div>
-          <p>{counter} of {target}</p>
-          { buttonFor('Dec', counter-1) }
-          { buttonFor('Inc', counter+1) }
-        </div>
+        return this.reset.isLoading() ? this.renderInitialLoadScreen() :
+               error                  ? this.renderError(error) :
+                                        this.renderData(data, refetch)
       }}
     </Query>
+  }
+
+  renderInitialLoadScreen() {
+    return <p>LOADING</p>
+  }
+
+  renderError(error) {
+    return <div>
+      <p>ERROR!</p>
+      <pre>{JSON.stringify(error, null, 2)}</pre>
+    </div>
+  }
+
+  renderData(data, refetch) {
+    const { counter, enabled } = this.state
+    const target    = data.value
+    const buttonFor = (text, newCounter) => {
+      const onClick = () => this.update(target, newCounter, refetch)
+      return <button disabled={!enabled} onClick={onClick}>
+        { text }
+      </button>
+    }
+
+    return <div>
+      <p>{counter} of {target}</p>
+      { buttonFor('Dec', counter-1) }
+      { buttonFor('Inc', counter+1) }
+    </div>
   }
 
   update(target, counter, refetch) {
@@ -65,4 +71,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App
