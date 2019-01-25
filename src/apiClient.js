@@ -8,7 +8,7 @@ const randomNumberBetween = (low, high) =>
   low + Math.floor((1+high-low) * Math.random())
 
 const getNewValue = () =>
-  resolveAfter(2000, randomNumberBetween(1, 10))
+  resolveAfter(1000, randomNumberBetween(1, 10))
 
 const client = new ApolloClient({
   clientState: { resolvers: { Query: { getNewValue } } }

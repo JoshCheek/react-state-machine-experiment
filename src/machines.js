@@ -68,16 +68,24 @@ class Reset {
 
 export { StateMachine, Reset }
 
-// const m = new Reset({
-//   begin: () => console.log("keep existing state"),
-//   end:   () => console.log("set state to initial values"),
-// })
-// console.log(m.toGraphviz())
-// Number.prototype.times = function(cb) {
-//   for(let i = 0; i < this; ++i)
-//     cb(i)
-// }
-// 2..times(() => m.begin())
-// 2..times(() => m.end())
-// 3..times(() => m.begin())
-// 3..times(() => m.end())
+/* you can toggle all the stuff below by commenting this one out
+
+// try this (assuming you have graphviz and imgcat)
+// $ node src/machines.js | dot -Tpng | imgcat
+const m = new Reset({
+  // error is so the graphviz data doesn't mix with the logging data
+  // which would cause it to be invalid graphviz syntax
+  begin: () => console.error("keep existing state"),
+  end:   () => console.error("set state to initial values"),
+})
+console.log(m.toGraphviz())
+
+Number.prototype.times = function(cb) {
+  for(let i = 0; i < this; ++i)
+    cb(i)
+}
+2..times(() => m.begin())
+2..times(() => m.end())
+3..times(() => m.begin())
+3..times(() => m.end())
+/**/
