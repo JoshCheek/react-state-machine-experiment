@@ -1,14 +1,17 @@
-import ApolloClient from "apollo-boost";
-const slowness = 1000; // ms
-const size = 10;
+import ApolloClient from "apollo-boost"
+const resolveAfter = (delay, value) =>
+  new Promise((resolve, reject) =>
+    setTimeout(() => resolve(value), delay))
 
-const resolveSlowly = value =>
-  new Promise((resolve, reject) => setTimeout(() => resolve(value), slowness));
+// inclusive
+const randomNumberBetween = (low, high) =>
+  low + Math.floor((1+high-low) * Math.random())
 
-const getNewValue = () => resolveSlowly(Math.floor(size * Math.random()));
+const getNewValue = () =>
+  resolveAfter(2000, randomNumberBetween(1, 10))
 
 const client = new ApolloClient({
   clientState: { resolvers: { Query: { getNewValue } } }
-});
+})
 
-export default client;
+export default client
